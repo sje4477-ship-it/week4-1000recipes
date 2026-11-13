@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { getRecipeById, getRelatedRecipes } from "../services/recipeService";
 import type { Recipe } from "../types/recipe";
 
@@ -14,6 +14,8 @@ function RecipeDetailPage() {
   const pageID = Number(n);
 
   useEffect(() => {
+    scrollTo(0, 0);
+    setIsLoading(true);
     getRecipeById(pageID).then((data) => {
       setRecipe(data);
       setIsLoading(false);
@@ -88,7 +90,11 @@ function RecipeDetailPage() {
             <div className="overflow-hidden">
               <div className="related-scroll-animate">
                 {relatedRecipes.map((recipe) => (
-                  <article className="recipe-card" key={recipe.id}>
+                  <Link
+                    className="recipe-card"
+                    key={recipe.id}
+                    to={`/recipes/${recipe.id}`}
+                  >
                     <img
                       src={recipe.image}
                       alt={recipe.name}
@@ -104,7 +110,7 @@ function RecipeDetailPage() {
                         ))}
                       </div>
                     </div>
-                  </article>
+                  </Link>
                 ))}
               </div>
             </div>
