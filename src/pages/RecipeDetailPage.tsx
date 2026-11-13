@@ -28,7 +28,7 @@ function RecipeDetailPage() {
 
   return (
     <main>
-      <div id="recipe-detail-top">
+      <div id="detail-top">
         <img
           src={recipe.image}
           alt={recipe.name}
@@ -49,6 +49,29 @@ function RecipeDetailPage() {
             ))}
           </p>
         </div>
+      </div>
+      <div id="detail-ingredient">
+        <h2>재료</h2>
+        <p>{recipe.ingredients.join(", ")}</p>
+      </div>
+      <div id="detail-recipe">
+        <h2>레시피</h2>
+        <ol>
+          {recipe.instructions.map((step, index) => (
+            <li key={String(recipe.id) + String(index)}>
+              {index + 1}. {step}
+            </li>
+          ))}
+        </ol>
+      </div>
+      <div id="detail-info">
+        <h2>요리 정보</h2>
+        <p>유형: {recipe.cuisine}</p>
+        <p>음식 특징: {recipe.mealType}</p>
+        <p>칼로리: {recipe.caloriesPerServing}kcal</p>
+        <p>
+          별점: {recipe.rating} (리뷰 {recipe.reviewCount}개)
+        </p>
       </div>
     </main>
   );
