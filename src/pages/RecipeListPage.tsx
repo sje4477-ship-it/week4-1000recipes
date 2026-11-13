@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { getAllRecipes } from "../services/recipeService";
 import type { Recipe } from "../types/recipe";
 
@@ -66,7 +67,11 @@ function RecipeListPage() {
       </div>
 
       {visibleRecipes.map((recipe) => (
-        <article className="recipe-card" key={recipe.id}>
+        <Link
+          className="recipe-card"
+          key={recipe.id}
+          to={`/recipes/${recipe.id}`}
+        >
           <img
             src={recipe.image}
             alt={recipe.name}
@@ -81,7 +86,7 @@ function RecipeListPage() {
             <p>조리 시간: {recipe.cookTimeMinutes}분</p>
             <p>태그: {recipe.tags.join(", ")}</p>
           </div>
-        </article>
+        </Link>
       ))}
       <div>
         {Array.from({ length: pageCount }, (_, index) => index + 1).map(
