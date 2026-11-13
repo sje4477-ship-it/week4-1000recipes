@@ -36,6 +36,11 @@ function RecipeDetailPage() {
 
   return (
     <main>
+      <header>
+        <Link to="/">
+          <h1>천 개의 레시피</h1>
+        </Link>
+      </header>
       <div id="detail-top">
         <img
           src={recipe.image}
