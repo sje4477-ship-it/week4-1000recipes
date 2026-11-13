@@ -1,11 +1,8 @@
 import "./App.css";
+import RecipeListPage from "./pages/RecipeListPage";
 
 function App() {
-  return (
-    <main>
-      <h1>React + Vite</h1>
-    </main>
-  );
+  return <RecipeListPage />;
 }
 
 export default App;
