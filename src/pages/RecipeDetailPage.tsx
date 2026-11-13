@@ -5,7 +5,7 @@ import type { Recipe } from "../types/recipe";
 
 function RecipeDetailPage() {
   const [recipe, setRecipe] = useState<Recipe | undefined>();
-  const [relatedRecipes, setRelatedRecipe] = useState<Recipe[]>();
+  const [relatedRecipes, setRelatedRecipes] = useState<Recipe[]>();
   const [isLoading, setIsLoading] = useState(true);
   const [isRelatedLoading, setIsRelatedLoading] = useState(true);
   //const [currentPage, setCurrentPage] = useState(1);
@@ -19,7 +19,7 @@ function RecipeDetailPage() {
       setIsLoading(false);
     });
     getRelatedRecipes(pageID).then((data) => {
-      setRelatedRecipe(data);
+      setRelatedRecipes(data);
       setIsRelatedLoading(false);
     });
   }, [pageID]);
@@ -49,11 +49,11 @@ function RecipeDetailPage() {
           </p>
           <p>준비 시간 {recipe.prepTimeMinutes}분</p>
           <p>조리 시간 {recipe.cookTimeMinutes}분</p>
-          <p>
+          <div>
             {recipe.tags.map((tag) => (
               <div key={tag}>{tag}</div>
             ))}
-          </p>
+          </div>
         </div>
       </div>
       <div id="detail-ingredient">
@@ -78,6 +78,38 @@ function RecipeDetailPage() {
         <p>
           별점: {recipe.rating} (리뷰 {recipe.reviewCount}개)
         </p>
+      </div>
+      <div id="detail-related">
+        <h2>이 요리와 연관 있는 레시피 보기</h2>
+        <div>
+          {isRelatedLoading || relatedRecipes === undefined ? (
+            <p>연관 레시피를 불러오는 중...</p>
+          ) : (
+            <div className="overflow-hidden">
+              <div className="related-scroll-animate">
+                {relatedRecipes.map((recipe) => (
+                  <article className="recipe-card" key={recipe.id}>
+                    <img
+                      src={recipe.image}
+                      alt={recipe.name}
+                      className="recipe-card__image"
+                      width="160"
+                    />
+                    <div className="recipe-card__content">
+                      <h2>{recipe.name}</h2>
+                      <p>{recipe.difficulty}</p>
+                      <div>
+                        {recipe.tags.map((tag) => (
+                          <div key={tag}>{tag}</div>
+                        ))}
+                      </div>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     </main>
   );
