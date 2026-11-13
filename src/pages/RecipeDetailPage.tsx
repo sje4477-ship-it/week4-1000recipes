@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { getRecipeById } from "../services/recipeService";
+import { getRecipeById, getRelatedRecipes } from "../services/recipeService";
 import type { Recipe } from "../types/recipe";
 
 function RecipeDetailPage() {
   const [recipe, setRecipe] = useState<Recipe | undefined>();
+  const [relatedRecipes, setRelatedRecipe] = useState<Recipe[]>();
   const [isLoading, setIsLoading] = useState(true);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [isRelatedLoading, setIsRelatedLoading] = useState(true);
+  //const [currentPage, setCurrentPage] = useState(1);
   //const pageSize = 6;
   const { n } = useParams();
   const pageID = Number(n);
@@ -15,6 +17,10 @@ function RecipeDetailPage() {
     getRecipeById(pageID).then((data) => {
       setRecipe(data);
       setIsLoading(false);
+    });
+    getRelatedRecipes(pageID).then((data) => {
+      setRelatedRecipe(data);
+      setIsRelatedLoading(false);
     });
   }, [pageID]);
 
