@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { getAllRecipes } from "../services/recipeService";
 import type { Recipe } from "../types/recipe";
 
-function RecipeListPage() {
+function RecipeDetailPage() {
   const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
@@ -101,4 +101,4 @@ function RecipeListPage() {
   );
 }
 
-export default RecipeListPage;
+export default RecipeDetailPage;
