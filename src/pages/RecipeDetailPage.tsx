@@ -37,7 +37,7 @@ function RecipeDetailPage() {
 
   return (
     <main className="grid-cols-1">
-      <header className=" w-screen relative left-1/2 -translate-x-1/2 bg-gray-100 border-b-0 text-center -mt-[2em]">
+      <header className=" w-screen relative left-1/2 -translate-x-1/2 bg-gray-100 border-b-0 text-center mt-[2em]">
         <Link to="/">
           <h1 className="font-bold text-2xl py-[1em]">천 개의 레시피</h1>
         </Link>
@@ -47,8 +47,8 @@ function RecipeDetailPage() {
         <div id="detail-top" className="flex flex-row gap-5">
           <img
             src={recipe.image}
-            alt={true ? "" : recipe.name}
-            className="recipe-card__image aspect-square border-1 basis-1/3 rounded-xl"
+            alt={""}
+            className="recipe-card__image aspect-square border basis-1/3 rounded-xl"
             width="160"
           />
           <div className="basis-2/3 flex flex-col gap-2">
@@ -117,13 +117,13 @@ function RecipeDetailPage() {
                 <div className="related-scroll-animate gap-5">
                   {relatedRecipes.map((recipe) => (
                     <Link
-                      className="flex flex-col aspect-square recipe-card group block overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition duration-200 hover:-translate-y-1 hover:shadow-lg"
+                      className=" flex-col aspect-square recipe-card group block overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition duration-200 hover:-translate-y-1 hover:shadow-lg"
                       key={recipe.id}
                       to={`/recipes/${recipe.id}`}
                     >
                       <img
                         src={recipe.image}
-                        alt={true ? "" : recipe.name}
+                        alt={""}
                         className="recipe-card__image w-full flex-1 object-cover transition duration-300 group-hover:scale-105"
                         width="160"
                       />
