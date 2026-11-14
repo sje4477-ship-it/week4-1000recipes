@@ -16,6 +16,7 @@ function RecipeDetailPage() {
   useEffect(() => {
     scrollTo(0, 0);
     setIsLoading(true);
+    setIsRelatedLoading(true);
     getRecipeById(pageID).then((data) => {
       setRecipe(data);
       setIsLoading(false);
