@@ -13,3 +13,17 @@ h1,
 p {
   margin: 0;
 }
+
+@keyframes related-scroll {
+  to {
+    transform: translateX(-50%);
+  }
+}
+.related-scroll-animate {
+  display: flex;
+  width: max-content;
+  animation: related-scroll 20s linear infinite;
+}
+.related-scroll-animate:hover {
+  animation-play-state: paused;
+}
