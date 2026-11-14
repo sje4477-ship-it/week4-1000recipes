@@ -35,10 +35,10 @@ function RecipeDetailPage() {
   }
 
   return (
-    <main>
-      <header>
+    <main className="grid-cols-1">
+      <header className=" w-screen relative left-1/2 -translate-x-1/2 bg-gray-100 border-b-0 text-center -mt-[2em]">
         <Link to="/">
-          <h1>천 개의 레시피</h1>
+          <h1 className="font-bold text-2xl py-[1em]">천 개의 레시피</h1>
         </Link>
       </header>
       <div id="detail-top">
