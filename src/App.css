@@ -33,3 +33,11 @@ p {
 .detail-h2 {
   @apply text-2xl font-bold;
 }
+
+.loading-recipe {
+  @apply text-center;
+}
+
+.cannot-find-recipe {
+  @apply text-center;
+}

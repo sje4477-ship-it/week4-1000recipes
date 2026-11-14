@@ -42,7 +42,7 @@ function RecipeListPage() {
   }, []);
 
   if (isLoading) {
-    return <p>레시피를 불러오는 중...</p>;
+    return <div className="loading-recipe">레시피를 불러오는 중...</div>;
   }
 
   return (

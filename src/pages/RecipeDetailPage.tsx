@@ -28,11 +28,11 @@ function RecipeDetailPage() {
   }, [pageID]);
 
   if (isLoading) {
-    return <p>레시피를 불러오는 중...</p>;
+    return <div className="loading-recipe">레시피를 불러오는 중...</div>;
   }
 
   if (recipe === undefined) {
-    return <p>레시피를 찾을 수 없습니다.</p>;
+    return <div className="cannot-find-recipe">레시피를 찾을 수 없습니다.</div>;
   }
 
   return (
