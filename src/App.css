@@ -29,3 +29,7 @@ p {
 .related-scroll-animate:hover {
   animation-play-state: paused;
 }
+
+.detail-h2 {
+  @apply text-xl font-bold;
+}
