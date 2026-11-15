@@ -1,3 +1,5 @@
+@import "tailwindcss";
+
 #root {
   max-width: 960px;
   margin: 0 auto;
@@ -26,4 +28,16 @@ p {
 }
 .related-scroll-animate:hover {
   animation-play-state: paused;
+}
+
+.detail-h2 {
+  @apply text-2xl font-bold;
+}
+
+.loading-recipe {
+  @apply text-center;
+}
+
+.cannot-find-recipe {
+  @apply text-center;
 }

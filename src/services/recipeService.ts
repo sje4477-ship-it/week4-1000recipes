@@ -34,6 +34,6 @@ export const getRelatedRecipes = (id: number): Promise<Recipe[]> => {
       );
 
       resolve(relatedRecipes);
-    }, 1000);
+    }, 2000);
   });
 };
