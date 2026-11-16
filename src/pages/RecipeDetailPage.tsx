@@ -117,15 +117,14 @@ function RecipeDetailPage() {
                 <div className="related-scroll-animate gap-5">
                   {relatedRecipes.map((recipe) => (
                     <Link
-                      className=" flex-col aspect-square recipe-card group block overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition duration-200 hover:-translate-y-1 hover:shadow-lg"
+                      className="flex flex-col aspect-square recipe-card group overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition duration-200 hover:-translate-y-1 hover:shadow-lg"
                       key={recipe.id}
                       to={`/recipes/${recipe.id}`}
                     >
                       <img
                         src={recipe.image}
                         alt={""}
-                        className="recipe-card__image w-full flex-1 object-cover transition duration-300 group-hover:scale-105"
-                        width="160"
+                        className="recipe-card__image w-xs min-h-0 flex-1 object-cover transition duration-300 group-hover:scale-105"
                       />
                       <div className="recipe-card__content shrink-0 space-y-1 bg-slate-50 p-4">
                         <div className="flex flex-row w-full">
