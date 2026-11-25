@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import FavoriteButton from "../components/FavoriteButton";
 import { getRecipeById, getRelatedRecipes } from "../services/recipeService";
 import type { Recipe } from "../types/recipe";
 
@@ -70,7 +71,7 @@ function RecipeDetailPage() {
             </div>
           </div>
         </div>
-
+        <FavoriteButton recipeId={recipe.id} />
         <div className="border-b border-gray-200"></div>
 
         <div id="detail-ingredient">
