@@ -1,34 +1,46 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import FavoriteButton from "../components/FavoriteButton";
-import { getRelatedRecipes, useRecipeById } from "../services/recipeService";
+import type { RecipeUsed } from "../pages/RecipeListPage";
+import {
+  getRelatedRecipes,
+  useAllRecipes,
+  useRecipeById,
+} from "../services/recipeService";
 import type { Recipe } from "../types/recipe";
 
 function RecipeDetailPage() {
   //const [recipe, setRecipe] = useState<Recipe | undefined>();
-  const [relatedRecipes, setRelatedRecipes] = useState<Recipe[]>();
+  //const [relatedRecipes, setRelatedRecipes] = useState<Recipe[]>();
   //const [isLoading, setIsLoading] = useState(true);
-  const [isRelatedLoading, setIsRelatedLoading] = useState(true);
+  //const [isRelatedLoading, setIsRelatedLoading] = useState(true);
   //const [currentPage, setCurrentPage] = useState(1);
   //const pageSize = 6;
   const { n } = useParams();
   const pageID = Number(n);
   const { data, isPending: isLoading, isError } = useRecipeById(pageID);
   const recipe: Recipe = data;
+  const {
+    data: recipesData,
+    isPending: recipesIsPending,
+    isError: recipesIsError,
+  } = useAllRecipes();
+  const recipes: RecipeUsed[] = recipesData?.recipes ?? [];
+  const relatedRecipes = getRelatedRecipes(pageID, recipes);
 
   useEffect(() => {
     scrollTo(0, 0);
     //setIsLoading(true);
-    setIsRelatedLoading(true);
+    //setIsRelatedLoading(true);
     /*useRecipeById(pageID).then((data) => {
       setRecipe(data);
       setIsLoading(false);
-    });*/
+    });
     getRelatedRecipes(pageID).then((data) => {
       setRelatedRecipes(data);
       setIsRelatedLoading(false);
-    });
-  }, [pageID]);
+    });*/
+  }, []);
 
   if (isLoading) {
     return <div className="loading-recipe">레시피를 불러오는 중...</div>;
@@ -116,7 +128,9 @@ function RecipeDetailPage() {
         <div id="detail-related">
           <h2 className="detail-h2 pb-5">이 요리와 연관 있는 레시피 보기</h2>
           <div>
-            {isRelatedLoading || relatedRecipes === undefined ? (
+            {recipesIsError ? (
+              <p>연관 레시피를 불러오지 못했습니다.</p>
+            ) : recipesIsPending || relatedRecipes === undefined ? (
               <p>연관 레시피를 불러오는 중...</p>
             ) : (
               <div className="overflow-hidden">

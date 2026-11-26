@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { use } from "react";
-import { recipes } from "../data/recipes.ts";
+import type { RecipeUsed } from "../pages/RecipeListPage";
+//import { recipes } from "../data/recipes.ts";
 import type { Recipe } from "../types/recipe";
 
 export function useAllRecipes() {
@@ -34,23 +35,12 @@ export function useRecipeById(id: number) {
   });
 }
 
-export const getRelatedRecipes = (id: number): Promise<Recipe[]> => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      const currentRecipe = recipes.find((recipe) => recipe.id === id);
-
-      if (!currentRecipe) {
-        resolve([]);
-        return;
-      }
-
-      const relatedRecipes = recipes.filter(
-        (recipe) =>
-          recipe.id !== currentRecipe.id &&
-          recipe.tags.some((tag) => currentRecipe.tags.includes(tag)),
-      );
-
-      resolve(relatedRecipes);
-    }, 2000);
-  });
-};
+export function getRelatedRecipes(id: number, recipes: RecipeUsed[]) {
+  const currentRecipe = recipes.find((recipe) => recipe.id === id);
+  if (!currentRecipe) return [];
+  return recipes.filter(
+    (recipe) =>
+      recipe.id !== currentRecipe.id &&
+      recipe.tags.some((tag) => currentRecipe.tags.includes(tag)),
+  );
+}

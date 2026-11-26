@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useAllRecipes } from "../services/recipeService";
 import type { Recipe } from "../types/recipe";
 
-type RecipeUsed = Pick<
+export type RecipeUsed = Pick<
   Recipe,
   | "id"
   | "name"
