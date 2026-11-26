@@ -1,11 +1,25 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { getAllRecipes } from "../services/recipeService";
+import { useAllRecipes } from "../services/recipeService";
 import type { Recipe } from "../types/recipe";
 
+type RecipeUsed = Pick<
+  Recipe,
+  | "id"
+  | "name"
+  | "cuisine"
+  | "difficulty"
+  | "cookTimeMinutes"
+  | "tags"
+  | "image"
+>;
+
 function RecipeListPage() {
-  const [recipes, setRecipes] = useState<Recipe[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  //const [recipes, setRecipes] = useState<Recipe[]>([]);
+  //const [isLoading, setIsLoading] = useState(true);
+  const { data, isPending: isLoading, isError } = useAllRecipes();
+  const recipes: RecipeUsed[] = data?.recipes ?? [];
+
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 6;
   const allTags = [...new Set(recipes.flatMap((recipe) => recipe.tags))];
@@ -34,15 +48,11 @@ function RecipeListPage() {
     setCurrentPage(1);
   };
 
-  useEffect(() => {
-    getAllRecipes().then((data) => {
-      setRecipes(data);
-      setIsLoading(false);
-    });
-  }, []);
-
   if (isLoading) {
     return <div className="loading-recipe">레시피를 불러오는 중...</div>;
+  }
+  if (isError) {
+    return <div className="loading-recipe">레시피를 불러오지 못했어요.</div>;
   }
 
   return (
