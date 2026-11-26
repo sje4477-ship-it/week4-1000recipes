@@ -24,13 +24,18 @@ function RecipeListPage() {
   const pageSize = 6;
   const allTags = [...new Set(recipes.flatMap((recipe) => recipe.tags))];
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [searchWord, setSearchWord] = useState<string>("");
+  const normalizedSearch = searchWord.trim().toLowerCase();
 
-  const filteredRecipes =
-    selectedTags.length === 0
-      ? recipes
-      : recipes.filter((recipe) =>
-          selectedTags.some((tag) => recipe.tags.includes(tag)),
-        );
+  const filteredRecipes = recipes.filter((recipe) => {
+    const tagCondition =
+      selectedTags.length === 0 ||
+      selectedTags.some((tag) => recipe.tags.includes(tag));
+    const searchConditon =
+      normalizedSearch === "" ||
+      recipe.name.toLowerCase().includes(normalizedSearch);
+    return tagCondition && searchConditon;
+  });
 
   const pageCount = Math.ceil(filteredRecipes.length / pageSize);
   const startIndex = (currentPage - 1) * pageSize;
@@ -48,6 +53,10 @@ function RecipeListPage() {
     setCurrentPage(1);
   };
 
+  useEffect(() => {
+    setSearchWord((previous) => previous.trim());
+  }, []);
+
   if (isLoading) {
     return <div className="loading-recipe">레시피를 불러오는 중...</div>;
   }
@@ -57,6 +66,16 @@ function RecipeListPage() {
 
   return (
     <main>
+      <div className="border">
+        <input
+          type="text"
+          placeholder="레시피를 검색해보세요."
+          onChange={(v) => {
+            setSearchWord(v.target.value);
+            setCurrentPage(1);
+          }}
+        ></input>
+      </div>
       <h1 className="text-2xl text-black font-bold"> 레시피 목록</h1>
       <div className="flex flex-wrap gap-2">
         <button
