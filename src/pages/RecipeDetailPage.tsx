@@ -1,27 +1,29 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import FavoriteButton from "../components/FavoriteButton";
-import { getRecipeById, getRelatedRecipes } from "../services/recipeService";
+import { getRelatedRecipes, useRecipeById } from "../services/recipeService";
 import type { Recipe } from "../types/recipe";
 
 function RecipeDetailPage() {
-  const [recipe, setRecipe] = useState<Recipe | undefined>();
+  //const [recipe, setRecipe] = useState<Recipe | undefined>();
   const [relatedRecipes, setRelatedRecipes] = useState<Recipe[]>();
-  const [isLoading, setIsLoading] = useState(true);
+  //const [isLoading, setIsLoading] = useState(true);
   const [isRelatedLoading, setIsRelatedLoading] = useState(true);
   //const [currentPage, setCurrentPage] = useState(1);
   //const pageSize = 6;
   const { n } = useParams();
   const pageID = Number(n);
+  const { data, isPending: isLoading, isError } = useRecipeById(pageID);
+  const recipe: Recipe = data;
 
   useEffect(() => {
     scrollTo(0, 0);
-    setIsLoading(true);
+    //setIsLoading(true);
     setIsRelatedLoading(true);
-    getRecipeById(pageID).then((data) => {
+    /*useRecipeById(pageID).then((data) => {
       setRecipe(data);
       setIsLoading(false);
-    });
+    });*/
     getRelatedRecipes(pageID).then((data) => {
       setRelatedRecipes(data);
       setIsRelatedLoading(false);
@@ -30,6 +32,9 @@ function RecipeDetailPage() {
 
   if (isLoading) {
     return <div className="loading-recipe">레시피를 불러오는 중...</div>;
+  }
+  if (isError) {
+    return <div className="loading-recipe">레시피를 불러오지 못했어요.</div>;
   }
 
   if (recipe === undefined) {

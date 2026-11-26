@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import { use } from "react";
 import { recipes } from "../data/recipes.ts";
 import type { Recipe } from "../types/recipe";
 
@@ -20,13 +21,18 @@ export function useAllRecipes() {
   });
 }
 
-export const getRecipeById = (id: number): Promise<Recipe | undefined> => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(recipes.find((recipe) => recipe.id === id));
-    }, 1000);
+export function useRecipeById(id: number) {
+  return useQuery({
+    queryKey: ["recipe", { id: id }],
+    queryFn: async () => {
+      const response = await fetch(
+        `https://frontend-seminar-week5-server.vercel.app/recipes/${id}`,
+      );
+      if (!response.ok) throw new Error("Recipe loading has failed");
+      else return response.json();
+    },
   });
-};
+}
 
 export const getRelatedRecipes = (id: number): Promise<Recipe[]> => {
   return new Promise((resolve) => {
