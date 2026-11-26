@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import FavoriteButton from "../components/FavoriteButton";
 import type { RecipeUsed } from "../pages/RecipeListPage";
