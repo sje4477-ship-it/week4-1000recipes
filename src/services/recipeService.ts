@@ -1,3 +1,4 @@
+import { useQuery } from "@tanstack/react-query";
 import { recipes } from "../data/recipes.ts";
 import type { Recipe } from "../types/recipe";
 
