@@ -44,6 +44,8 @@ function RecipeListPage() {
     startIndex + pageSize,
   );
 
+  const [isTagExpanded, setIsTagExpanded] = useState<boolean>(false);
+
   const toggleTag = (tag: string) => {
     setSelectedTags((currentTags) =>
       currentTags.includes(tag)
@@ -66,10 +68,11 @@ function RecipeListPage() {
 
   return (
     <main>
-      <div className="border">
+      <div className="border m-5 p-1 focus:border-b-blue-400 rounded-md">
         <input
           type="text"
           placeholder="레시피를 검색해보세요."
+          className="w-full"
           onChange={(v) => {
             setSearchWord(v.target.value);
             setCurrentPage(1);
@@ -77,7 +80,9 @@ function RecipeListPage() {
         ></input>
       </div>
       <h1 className="text-2xl text-black font-bold"> 레시피 목록</h1>
-      <div className="flex flex-wrap gap-2">
+      <div
+        className={`flex flex-wrap gap-2 overflow-hidden ${isTagExpanded ? "max-h-none" : "max-h-20"}`}
+      >
         <button
           type="button"
           className="rounded-md bg-black px-2 py-1 text-sm font-semibold text-white shadow-sm hover:bg-gray-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-700"
@@ -104,6 +109,15 @@ function RecipeListPage() {
           </button>
         ))}
       </div>
+      <button
+        type="button"
+        className="rounded-md bg-white px-2 py-1 text-sm font-semibold text-black shadow-sm hover:bg-gray-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-700"
+        onClick={() => {
+          setIsTagExpanded(!isTagExpanded);
+        }}
+      >
+        태그 {isTagExpanded ? "접기" : "더보기"}
+      </button>
 
       <div className="mt-4 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {visibleRecipes.map((recipe) => (
