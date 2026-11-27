@@ -1,22 +1,41 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { getAllRecipes } from "../services/recipeService";
+import { useAllRecipes } from "../services/recipeService";
 import type { Recipe } from "../types/recipe";
 
+export type RecipeUsed = Pick<
+  Recipe,
+  | "id"
+  | "name"
+  | "cuisine"
+  | "difficulty"
+  | "cookTimeMinutes"
+  | "tags"
+  | "image"
+>;
+
 function RecipeListPage() {
-  const [recipes, setRecipes] = useState<Recipe[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  //const [recipes, setRecipes] = useState<Recipe[]>([]);
+  //const [isLoading, setIsLoading] = useState(true);
+  const { data, isPending: isLoading, isError } = useAllRecipes();
+  const recipes: RecipeUsed[] = data?.recipes ?? [];
+
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 6;
   const allTags = [...new Set(recipes.flatMap((recipe) => recipe.tags))];
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [searchWord, setSearchWord] = useState<string>("");
+  const normalizedSearch = searchWord.trim().toLowerCase();
 
-  const filteredRecipes =
-    selectedTags.length === 0
-      ? recipes
-      : recipes.filter((recipe) =>
-          selectedTags.some((tag) => recipe.tags.includes(tag)),
-        );
+  const filteredRecipes = recipes.filter((recipe) => {
+    const tagCondition =
+      selectedTags.length === 0 ||
+      selectedTags.some((tag) => recipe.tags.includes(tag));
+    const searchConditon =
+      normalizedSearch === "" ||
+      recipe.name.toLowerCase().includes(normalizedSearch);
+    return tagCondition && searchConditon;
+  });
 
   const pageCount = Math.ceil(filteredRecipes.length / pageSize);
   const startIndex = (currentPage - 1) * pageSize;
@@ -24,6 +43,8 @@ function RecipeListPage() {
     startIndex,
     startIndex + pageSize,
   );
+
+  const [isTagExpanded, setIsTagExpanded] = useState<boolean>(false);
 
   const toggleTag = (tag: string) => {
     setSelectedTags((currentTags) =>
@@ -35,20 +56,33 @@ function RecipeListPage() {
   };
 
   useEffect(() => {
-    getAllRecipes().then((data) => {
-      setRecipes(data);
-      setIsLoading(false);
-    });
+    setSearchWord((previous) => previous.trim());
   }, []);
 
   if (isLoading) {
     return <div className="loading-recipe">레시피를 불러오는 중...</div>;
   }
+  if (isError) {
+    return <div className="loading-recipe">레시피를 불러오지 못했어요.</div>;
+  }
 
   return (
     <main>
+      <div className="border m-5 p-1 focus:border-b-blue-400 rounded-md">
+        <input
+          type="text"
+          placeholder="레시피를 검색해보세요."
+          className="w-full"
+          onChange={(v) => {
+            setSearchWord(v.target.value);
+            setCurrentPage(1);
+          }}
+        ></input>
+      </div>
       <h1 className="text-2xl text-black font-bold"> 레시피 목록</h1>
-      <div className="flex flex-wrap gap-2">
+      <div
+        className={`flex flex-wrap gap-2 overflow-hidden ${isTagExpanded ? "max-h-none" : "max-h-20"}`}
+      >
         <button
           type="button"
           className="rounded-md bg-black px-2 py-1 text-sm font-semibold text-white shadow-sm hover:bg-gray-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-700"
@@ -75,6 +109,15 @@ function RecipeListPage() {
           </button>
         ))}
       </div>
+      <button
+        type="button"
+        className="rounded-md bg-white px-2 py-1 text-sm font-semibold text-black shadow-sm hover:bg-gray-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-700"
+        onClick={() => {
+          setIsTagExpanded(!isTagExpanded);
+        }}
+      >
+        태그 {isTagExpanded ? "접기" : "더보기"}
+      </button>
 
       <div className="mt-4 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {visibleRecipes.map((recipe) => (
